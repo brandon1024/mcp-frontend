@@ -6,7 +6,11 @@
 {% endblock %}
 
 {# Add View-Specific Scripts #}
-{% block scripts %}{% endblock %}
+{% block scripts %}
+  <script type="text/javascript" src="/js/dashboard.js"></script>
+{% endblock %}
 
 {# View Body #}
-{% block body %}{% endblock %}
+{% block body %}
+  <canvas id="map-canvas"></canvas>
+{% endblock %}
