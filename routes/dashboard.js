@@ -1,7 +1,7 @@
 /* Retrieve Router Handler */
 const express = require('express');
 const router = express.Router();
-const http = require('http');
+const https = require('https');
 
 /* Debugger */
 const debug = require('debug')('route-home');
@@ -24,14 +24,43 @@ module.exports = (app, passport) => {
 
     /* API Endpoints */
     router.get('/ledger', authenticate, function(req, res, next) {
-        res.status(200).send({"ledger":[
-                {
-                    "week": 0,
-                    "item": "startup",
-                    "credit": 175.0,
-                    "debit": 0.0
+        let host = "https://7066414.pythonanywhere.com";
+        let path = "/mcp/get_ledger?token=78b9a29078a60441508d28c2f67a7ebb";
+
+        https.get(host + path, function (resp) {
+            const { statusCode } = resp;
+            const contentType = resp.headers['content-type'];
+
+            let error;
+            if (statusCode !== 200)
+                error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+            else if (!/^application\/json/.test(contentType))
+                error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
+
+            if(error) {
+                console.error(error.message);
+                // consume response data to free up memory
+                res.status(500);
+                return;
+            }
+
+            resp.setEncoding('utf8');
+
+            let rawData = '';
+            resp.on('data', (chunk) => {
+                rawData += chunk;
+            });
+
+            resp.on('end', () => {
+                try {
+                    res.status(200).send(JSON.parse(rawData));
+                } catch (e) {
+                    res.status(500);
                 }
-            ],"status":0, "description":""});
+            });
+        }).on('error', (e) => {
+            res.status(500);
+        });
     });
 
     /* Register Router */
