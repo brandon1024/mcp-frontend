@@ -13,29 +13,46 @@
 {# View Body #}
 {% block body %}
   <canvas id="map-canvas"></canvas>
-
-  <div class="container" id = "ledger">
-    <div class="row">
-      <div class="col">
-        Week
-      </div>
-
-      <div class="col">
-        Item
-      </div>
-
-      <div class="col">
-        Credit
-      </div>
-
-      <div class="col">
-        Debit
-      </div>
-
-      <div class="col">
-        Balance
+  <div class="row">
+    <div class="col" id="report-table-pane">
+      <div class="card ml-4 h-100">
+        <div class="card-body">
+          <div class="table-wrapper-2">
+            <table class="table table-sm">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Week</th>
+                <th>Item</th>
+                <th>Credit</th>
+                <th>Debit</th>
+                <th>Balance</th>
+              </tr>
+              </thead>
+              <tbody id="report-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-
+    <div class="col" id="logs-table-pane">
+      <div class="card mr-4 h-100">
+        <div class="card-body">
+          <div class="table-wrapper-2">
+            <table class="table table-sm">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Log</th>
+              </tr>
+              </thead>
+              <tbody id="logs-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
