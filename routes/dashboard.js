@@ -70,13 +70,13 @@ module.exports = (app, passport) => {
         });
     });
 
-    router.post('/logs', (req, res, next) => {
+    router.post('/logs', authenticate, (req, res, next) => {
         if(!req.body)
             return res.status(400).send('No request body.');
 
         let log = req.body['log'];
         if(!log)
-            return res.status(400).send('No log file');
+            return res.status(400).send('No log file.');
 
         knex('logs').insert({log: log}).then(() => {
             return res.status(200).send('Log saved.');
@@ -86,7 +86,7 @@ module.exports = (app, passport) => {
         });
     });
 
-    router.get('/logs', (req, res, next) => {
+    router.get('/logs', authenticate, (req, res, next) => {
         knex('logs').select('log').then((logs) => {
             return res.status(200).send(logs);
         }).catch((err) => {
@@ -95,12 +95,33 @@ module.exports = (app, passport) => {
         });
     });
 
-    router.post('/map', (req, res, next) => {
-        //todo
+    router.post('/map', authenticate, (req, res, next) => {
+        if(!req.body)
+            return res.status(400).send('No request body.');
+
+        if(!req.body['coords'])
+            return res.status(400).send('No coords.');
+        if(!req.body['type'])
+            return res.status(400).send('No type.');
+        if(!req.body['rows'])
+            return res.status(400).send('No rows.');
+        if(!req.body['cols'])
+            return res.status(400).send('No cols.');
+
+        //todo parse and store as stringified JSON
     });
 
-    router.get('/map', (req, res, next) => {
-        //todo
+    router.get('/map', authenticate, (req, res, next) => {
+        knex('map_coords').select('coords').then((coords) => {
+            try {
+                return res.status(200).send(JSON.parse(coords));
+            } catch (e) {
+                return res.status(200).send({});
+            }
+        }).catch((err) => {
+            debug(err);
+            return res.status(400).send('Internal Server Error.');
+        });
     });
 
     /* Register Router */

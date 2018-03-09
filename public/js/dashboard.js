@@ -23,11 +23,12 @@ window.onload = () => {
 };
 
 function updateMap() {
-    /*$.ajax({
+    $.ajax({
         type: "get",
         url: "/dashboard/map",
         dataType: "json",
         success: function (mapcoords) {
+            console.log(mapcoords);
             //map
             var COLOR_RED = 'rgba(255, 0, 0, 0.5)';
             var COLOR_BLUE = 'rgba(0, 0, 255, 0.5)';
@@ -40,7 +41,8 @@ function updateMap() {
 
             var c = document.getElementById("map-canvas");
             var ctx = c.getContext("2d");
-            ctx.canvas.width  = window.innerWidth;
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+            ctx.canvas.width  = c.getBoundingClientRect().width;
             ctx.canvas.height = 600;
 
             renderCircle(ctx, [100, 100], COLOR_RED);
@@ -49,26 +51,7 @@ function updateMap() {
         error: function() {
             console.log('err');
         }
-    });*/
-
-    //map
-    var COLOR_RED = 'rgba(255, 0, 0, 0.5)';
-    var COLOR_BLUE = 'rgba(0, 0, 255, 0.5)';
-    var renderCircle = function(context, coords, color) {
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(coords[0], coords[1], 8, 0, Math.PI * 2, true);
-        ctx.fill();
-    };
-
-    var c = document.getElementById("map-canvas");
-    var ctx = c.getContext("2d");
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-    ctx.canvas.width  = c.getBoundingClientRect().width;
-    ctx.canvas.height = 600;
-
-    renderCircle(ctx, [100, 100], COLOR_RED);
-    renderCircle(ctx, [120, 120], COLOR_BLUE);
+    });
 }
 
 function updateLedger() {
