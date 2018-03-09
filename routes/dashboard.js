@@ -1,6 +1,7 @@
 /* Retrieve Router Handler */
 const express = require('express');
 const router = express.Router();
+const http = require('http');
 
 /* Debugger */
 const debug = require('debug')('route-home');
@@ -22,6 +23,16 @@ module.exports = (app, passport) => {
 
 
     /* API Endpoints */
+    router.get('/leger', authenticate, function(req, res, next) {
+        res.status(200).send({"ledger":[
+                {
+                    "week": 0,
+                    "item": "startup",
+                    "credit": 175.0,
+                    "debit": 0.0
+                }
+            ],"status":0, "description":""});
+    });
 
     /* Register Router */
     app.use('/dashboard', router);
