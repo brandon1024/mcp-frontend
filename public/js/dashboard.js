@@ -28,8 +28,6 @@ function updateMap() {
         url: "/dashboard/map",
         dataType: "json",
         success: function (mapcoords) {
-            //map
-            console.log(mapcoords);
             var COLOR_RED = 'rgba(255, 0, 0, 0.5)';
             var COLOR_BLUE = 'rgba(0, 0, 255, 0.5)';
             var renderCircle = function(context, coords, color) {
