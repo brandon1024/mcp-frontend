@@ -12,11 +12,22 @@
 
 {# View Body #}
 {% block body %}
-  <canvas id="map-canvas"></canvas>
+  <div class="row padding-nav">
+    <div class="col">
+      <div class="card h-100" id="map-card">
+        <div class="card-body pb-0 w-100">
+          <canvas id="map-canvas"></canvas>
+        </div>
+        <span class="text-right w-100 pr-2 pb-2" id="map-status-text">Reloading in 10s...</span>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
-    <div class="col" id="report-table-pane">
-      <div class="card ml-4 h-100">
-        <div class="card-body">
+    <div class="col mt-2 mb-2" id="report-table-pane">
+      <div class="card h-100">
+        <div class="card-body pb-0">
+          <h3>Ledger</h3>
           <div class="table-wrapper-2">
             <table class="table table-sm">
               <thead>
@@ -34,11 +45,13 @@
             </table>
           </div>
         </div>
+        <a class="btn btn-large bg-elegant" role="button" id="update-ledger-button">Update Ledger</a>
       </div>
     </div>
-    <div class="col" id="logs-table-pane">
-      <div class="card mr-4 h-100">
-        <div class="card-body">
+    <div class="col mt-2 mb-2" id="logs-table-pane">
+      <div class="card h-100">
+        <div class="card-body pb-0">
+          <h3>Logs</h3>
           <div class="table-wrapper-2">
             <table class="table table-sm">
               <thead>
@@ -52,6 +65,7 @@
             </table>
           </div>
         </div>
+        <a class="btn btn-large bg-elegant" role="button" id="update-logs-button">Update Logs</a>
       </div>
     </div>
   </div>
