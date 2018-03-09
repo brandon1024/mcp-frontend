@@ -32,6 +32,12 @@ module.exports = (app, passport) => {
             const { statusCode } = resp;
             const contentType = resp.headers['content-type'];
 
+            let currDate = new Date(Date.now()).toISOString().replace(/T/, ' ').replace(/\..*$/, '');
+            let log = currDate + " " + host + path;
+            knex('logs').insert({log: log}).then().catch(() => {
+                console.error(error.message);
+            });
+
             let error;
             if (statusCode !== 200)
                 error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
@@ -87,6 +93,14 @@ module.exports = (app, passport) => {
             debug(err);
             return res.status(400).send('Internal Server Error.');
         });
+    });
+
+    router.post('/map', (req, res, next) => {
+        //todo
+    });
+
+    router.get('/map', (req, res, next) => {
+        //todo
     });
 
     /* Register Router */

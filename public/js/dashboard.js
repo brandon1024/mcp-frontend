@@ -78,6 +78,8 @@ function updateLedger() {
         dataType: "json",
         success: function (ledger) {
             var tableBody = document.getElementById("report-table-body");
+            while (tableBody.firstChild)
+                tableBody.removeChild(tableBody.firstChild);
 
             for(var i = 0; i < ledger.length; i++) {
                 var row = document.createElement("tr");
@@ -95,11 +97,6 @@ function updateLedger() {
                     row.appendChild(col);
                 }
 
-                //TODO: ADD BALANCE
-                var col = document.createElement("td");
-                col.innerText = 'stuff';
-                row.appendChild(col);
-
                 tableBody.appendChild(row);
             }
         },
@@ -116,6 +113,8 @@ function updateLogs() {
         dataType: "json",
         success: function (logs) {
             var tableBody = document.getElementById("logs-table-body");
+            while (tableBody.firstChild)
+                tableBody.removeChild(tableBody.firstChild);
 
             for(var index = 0; index < logs.length; index++) {
                 var row = document.createElement("tr");
