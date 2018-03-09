@@ -82,7 +82,7 @@ module.exports = (app, passport) => {
             return res.status(200).send('Log saved.');
         }).catch((err) => {
             debug(err);
-            return res.status(400).send('Internal Server Error.');
+            return res.status(500).send('Internal Server Error.');
         });
     });
 
@@ -91,7 +91,22 @@ module.exports = (app, passport) => {
             return res.status(200).send(logs);
         }).catch((err) => {
             debug(err);
-            return res.status(400).send('Internal Server Error.');
+            return res.status(500).send('Internal Server Error.');
+        });
+    });
+
+    router.get('/downloadlogs', authenticate, (req, res, next) => {
+        knex('logs').select('log').then((logs) => {
+            let logData = "";
+
+            for(let index = 0; index < logs.length; index++)
+                logData += logs[index].log + "\n";
+
+            res.set({"Content-Disposition":"attachment; filename=\"logs.log\""});
+            res.send(logData);
+        }).catch((err) => {
+            debug(err);
+            return res.status(500).send('Internal Server Error.');
         });
     });
 
@@ -100,27 +115,39 @@ module.exports = (app, passport) => {
             return res.status(400).send('No request body.');
 
         if(!req.body['coords'])
-            return res.status(400).send('No coords.');
-        if(!req.body['type'])
             return res.status(400).send('No type.');
         if(!req.body['rows'])
             return res.status(400).send('No rows.');
         if(!req.body['cols'])
             return res.status(400).send('No cols.');
 
-        //todo parse and store as stringified JSON
+        let coords = req.body['coords']; //is json?
+        let cols = req.body['cols'];
+        let rows = req.body['rows'];
+
+        knex('map_coords').del().then(() => {
+            //format: [{x: _, y: _}, ...]
+            let data = {coords: coords, rows: rows, cols: cols};
+
+            return knex('map_coords').insert({coords: JSON.stringify(data)});
+        }).then(() => {
+            return res.status(200).send('Coordinates saved.');
+        }).catch((err) => {
+            return res.status(500).send('Internal Server Error.');
+        });
     });
 
     router.get('/map', authenticate, (req, res, next) => {
-        knex('map_coords').select('coords').then((coords) => {
+        knex('map_coords').select('coords').then((data) => {
             try {
-                return res.status(200).send(JSON.parse(coords));
+                return res.status(200).send(JSON.parse(data[0].coords));
             } catch (e) {
-                return res.status(200).send({});
+                console.log(e);
+                return res.status(200).send({coords: [], rows: 0, cols: 0});
             }
         }).catch((err) => {
             debug(err);
-            return res.status(400).send('Internal Server Error.');
+            return res.status(500).send('Internal Server Error.');
         });
     });
 
