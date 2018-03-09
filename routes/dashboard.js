@@ -23,7 +23,7 @@ module.exports = (app, passport) => {
 
 
     /* API Endpoints */
-    router.get('/leger', authenticate, function(req, res, next) {
+    router.get('/ledger', authenticate, function(req, res, next) {
         res.status(200).send({"ledger":[
                 {
                     "week": 0,

@@ -15,4 +15,16 @@ window.onload = () => {
 
     renderCircle(ctx, [100, 100], COLOR_RED);
     renderCircle(ctx, [120, 120], COLOR_BLUE);
+
+    $.ajax({
+        type: "get",
+        url: "/dashboard/ledger",
+        dataType: "json",
+        success: function (json) {
+            console.log(json);
+        },
+        error: function() {
+            console.log('err');
+        }
+    });
 };
