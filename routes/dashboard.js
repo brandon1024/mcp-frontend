@@ -114,20 +114,16 @@ module.exports = (app, passport) => {
         if(!req.body)
             return res.status(400).send('No request body.');
 
-        if(!req.body['coords'])
-            return res.status(400).send('No type.');
+        if(!req.body['map'])
+            return res.status(400).send('No coords.');
         if(!req.body['rows'])
             return res.status(400).send('No rows.');
         if(!req.body['cols'])
             return res.status(400).send('No cols.');
 
-        let coords = req.body['coords']; //is json?
-        let cols = req.body['cols'];
-        let rows = req.body['rows'];
-
         knex('map_coords').del().then(() => {
             //format: [{x: _, y: _}, ...]
-            let data = {coords: coords, rows: rows, cols: cols};
+            let data = {coords: req.body['map'], rows: req.body['cols'], cols: req.body['rows']};
 
             return knex('map_coords').insert({coords: JSON.stringify(data)});
         }).then(() => {
