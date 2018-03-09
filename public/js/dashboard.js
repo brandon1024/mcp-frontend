@@ -28,13 +28,19 @@ function updateMap() {
         url: "/dashboard/map",
         dataType: "json",
         success: function (mapcoords) {
-            var COLOR_RED = 'rgba(255, 0, 0, 0.5)';
-            var COLOR_BLUE = 'rgba(0, 0, 255, 0.5)';
-            var renderCircle = function(context, coords, color) {
-                ctx.fillStyle = color;
+            var COLOR_RED = 'rgba(255, 0, 0, 0.4)';
+            var COLOR_BLUE = 'rgba(0, 0, 255, 0.4)';
+            var COLOR_RED_OUTLINE = 'rgba(0, 0, 255, 0.8)';
+            var COLOR_BLUE_OUTLINE = 'rgba(0, 0, 255, 0.8)';
+
+            var renderCircle = function(context, coords, colorfill, coloroutline) {
                 ctx.beginPath();
                 ctx.arc(coords[0], coords[1], 8, 0, Math.PI * 2, true);
+                ctx.fillStyle = colorfill;
                 ctx.fill();
+                context.lineWidth = 1;
+                context.strokeStyle = coloroutline;
+                context.stroke();
             };
 
             var c = document.getElementById("map-canvas");
@@ -45,9 +51,9 @@ function updateMap() {
 
             var coordinates = mapcoords.coords;
             for(var index = 0; index < coordinates.length; index++) {
-                var scaledX = Math.floor((coordinates[index][0] / mapcoords.cols) * ctx.canvas.width);
-                var scaledY = Math.floor((coordinates[index][1] / mapcoords.rows) * ctx.canvas.height);
-                renderCircle(ctx, [scaledX, scaledY], coordinates[index].type === 'Y' ? COLOR_RED : COLOR_BLUE);
+                var scaledX = (coordinates[index][0] / mapcoords.cols) * ctx.canvas.width;
+                var scaledY = (coordinates[index][1] / mapcoords.rows) * ctx.canvas.height;
+                renderCircle(ctx, [scaledX, scaledY], coordinates[index].type === 'Y' ? COLOR_RED : COLOR_BLUE, coordinates[index].type === 'Y' ? COLOR_RED_OUTLINE : COLOR_BLUE_OUTLINE);
             }
         },
         error: function() {
