@@ -21,6 +21,33 @@ window.onload = () => {
         url: "/dashboard/ledger",
         dataType: "json",
         success: function (json) {
+            var table = document.getElementById("ledger");
+            var ledger = json["ledger"];
+
+            for(var i = 0; i < ledger.length; i++) {
+                var row = document.createElement("div");
+                row.classList.add("row");
+
+                var keys = Object.keys(ledger[i]);
+                for(var j = 0; j < keys.length; j++) {
+                    var key = keys[j];
+
+                    var col = document.createElement("div");
+                    col.classList.add("col");
+                    col.innerText = ledger[i][key];
+
+                    row.appendChild(col);
+                }
+
+                //TODO: ADD BALANCE
+                var col = document.createElement("div");
+                col.classList.add("col");
+                col.innerText = 'stuff';
+                row.appendChild(col);
+
+                table.appendChild(row);
+            }
+
             console.log(json);
         },
         error: function() {
