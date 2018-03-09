@@ -47,11 +47,8 @@ function updateMap() {
 
             var coordinates = mapcoords.coords;
             for(var index = 0; index < coordinates.length; index++) {
-                console.log(mapcoords);
                 var scaledX = Math.floor((coordinates[index][0] / mapcoords.cols) * ctx.canvas.width);
                 var scaledY = Math.floor((coordinates[index][1] / mapcoords.rows) * ctx.canvas.height);
-                console.log(scaledX);
-                console.log(scaledY);
                 renderCircle(ctx, [scaledX, scaledY], coordinates[index].type === 'Y' ? COLOR_RED : COLOR_BLUE);
             }
         },
